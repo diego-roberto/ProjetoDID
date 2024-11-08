@@ -15,7 +15,7 @@ public class Tela extends javax.swing.JFrame {
     Cabo objCabo = new Cabo();
     Integer valorFinal = 0;
     Calculo chamaCalc = new Calculo();
-        
+    boolean isOk = true;
     
     public Tela() {
         initComponents();
@@ -29,8 +29,8 @@ public class Tela extends javax.swing.JFrame {
         groupOrigem.add(rbtnOrigemL);
         ButtonGroup groupDestino = new ButtonGroup();
         groupDestino.add(rbtnDestinoM);
-        groupDestino.add(rbtnDestinoL);               
-        
+        groupDestino.add(rbtnDestinoL);     
+                
     }
 
 
@@ -99,7 +99,7 @@ public class Tela extends javax.swing.JFrame {
 
         jLabel5.setText("Rack");
 
-        cbRackOrigem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44" }));
+        cbRackOrigem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44" }));
         cbRackOrigem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbRackOrigemActionPerformed(evt);
@@ -196,7 +196,7 @@ public class Tela extends javax.swing.JFrame {
 
         jLabel6.setText("Rack");
 
-        cbRackDestino.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44" }));
+        cbRackDestino.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -323,12 +323,16 @@ public class Tela extends javax.swing.JFrame {
 
     private void btnGerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarActionPerformed
         
+        isOk = true;
+        
         if (rbtnOrigemL.isSelected()) {
             objCabo.setOrigem("l");
         }else if (rbtnOrigemM.isSelected()) {
             objCabo.setOrigem("m");
         }else{
             JOptionPane.showMessageDialog(null, "Selecione a fila de Origem", "Erro", JOptionPane.OK_OPTION);
+            lblMensagem.setText("");
+            isOk = false;
         }
         
         if (rbtnDestinoL.isSelected()) {
@@ -337,33 +341,41 @@ public class Tela extends javax.swing.JFrame {
             objCabo.setDestino("m");
         }else{
             JOptionPane.showMessageDialog(null, "Selecione a fila de Destino", "Erro", JOptionPane.OK_OPTION);
+            lblMensagem.setText("");
+            isOk = false;
         }
-
-        objCabo.setRackOrigem(cbRackOrigem.getSelectedItem().toString());
-        objCabo.setRackDestino(cbRackDestino.getSelectedItem().toString());
-        objCabo.setReguaOrigem(cbReguaOrigem.getSelectedItem().toString());
-        objCabo.setReguaDestino(cbReguaDestino.getSelectedItem().toString());
-        objCabo.setTribOrigem(cbTributarioOrigem.getSelectedItem().toString());
-        objCabo.setTribDestino(cbTributarioDestino.getSelectedItem().toString());
         
+        if (isOk) {
+            calcular();
+        }
                 
-        valorFinal = chamaCalc.calculoValor(objCabo);
-        
-        //constante para conversão Polegadas/Centímetros
-        final Double valorCentimetro = valorFinal/0.39370;
-        final Double valorMetro = valorCentimetro/100;
-        
-            //converte casas decimais
-            DecimalFormat dF = new DecimalFormat("0.##");
-            String valorFinalCentimetro = dF.format(valorCentimetro);
-            String valorFinalMetro = dF.format(valorMetro);
-        
-                                
-        lblMensagem.setText(valorFinal.toString()+" pol. /  "+valorFinalMetro+" m. /  "+valorFinalCentimetro+" cm.");
-        
         
     }//GEN-LAST:event_btnGerarActionPerformed
 
+    public void calcular() {
+    objCabo.setRackOrigem(cbRackOrigem.getSelectedItem().toString());
+    objCabo.setRackDestino(cbRackDestino.getSelectedItem().toString());
+    objCabo.setReguaOrigem(cbReguaOrigem.getSelectedItem().toString());
+    objCabo.setReguaDestino(cbReguaDestino.getSelectedItem().toString());
+    objCabo.setTribOrigem(cbTributarioOrigem.getSelectedItem().toString());
+    objCabo.setTribDestino(cbTributarioDestino.getSelectedItem().toString());
+
+
+    valorFinal = chamaCalc.calculoValor(objCabo);
+
+    //constante para conversão Polegadas/Centímetros
+    final Double valorCentimetro = valorFinal/0.39370;
+    final Double valorMetro = valorCentimetro/100;
+
+    //converte casas decimais
+    DecimalFormat dF = new DecimalFormat("0.##");
+    String valorFinalCentimetro = dF.format(valorCentimetro);
+    String valorFinalMetro = dF.format(valorMetro);
+    
+
+    lblMensagem.setText(valorFinal.toString()+" pol. /  "+valorFinalMetro+" m. /  "+valorFinalCentimetro+" cm.");
+}
+    
     private void cbReguaOrigemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbReguaOrigemActionPerformed
       
     }//GEN-LAST:event_cbReguaOrigemActionPerformed

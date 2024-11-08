@@ -4,14 +4,25 @@ package entity;
 
 public class Cabo {
     
-    private String origem = "0";
-    private String destino = "0";
-    private String reguaOrigem = "0";
-    private String reguaDestino = "0";
-    private String tribOrigem = "0";
-    private String tribDestino = "0";
-    private String rackOrigem = "0";
-    private String rackDestino = "0";
+    private String origem;
+    private String destino;
+    private String reguaOrigem;
+    private String reguaDestino;
+    private String tribOrigem;
+    private String tribDestino;
+    private String rackOrigem;
+    private String rackDestino;
+
+    public Cabo() {
+        this.origem = "0";
+        this.destino = "0";
+        this.reguaOrigem = "0";
+        this.reguaDestino = "0";
+        this.tribOrigem = "1";
+        this.tribDestino = "1";
+        this.rackOrigem = "1";
+        this.rackDestino = "1";
+    }
 
     public String getOrigem() {
         return origem;
